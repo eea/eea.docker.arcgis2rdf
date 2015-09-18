@@ -6,14 +6,14 @@ Exports ArcGIS online catalogue data into RDF files
 
 Additional libraries in use apart of the standard Python libs : rdflib and json
 
- rdflib ->
+ * rdflib ->
     RDFLib is open source and is maintained in a GitHub repository:
     http://github.com/RDFLib/rdflib/
     RDFLib may be easy_installed:
        First is needed to install in the machine
        the easy install package at: http://pypi.python.org/pypi/setuptools
        Second run in shell:  $ easy_install rdflib
- json ->
+ * json ->
      This library is available sonce Python 2.6 can be found at: http://pypi.python.org/pypi/simplejson/
 
 ## How to run:
