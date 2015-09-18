@@ -21,12 +21,14 @@ Additional libraries in use apart of the standard Python libs : rdflib and json
     2. Go to the script directory (Python exported is needed)
     3. Run: python readEoEGroup_rdf.py <outputfilepath> -g "GROUPNAME"
 
-### The argument is:
+#### The argument is:
    outputpath: Provides the full output in the server machine with the filename with extension .rdf
    e.g. "M:\ags_mxd_data\RDF\test.rdf"
 
-### Options
+#### Options
    --group, -g : It possible retrive data from sevaral groups.
         The dafault group is "European Environment Agency (Applications)"
         Avalilable groups are listed in http://eea.maps.arcgis.com/home/groups.html
 
+#### Example
+    python readEoEGroup_rdf.py retrive_data.rdf -g "GMES Services"
