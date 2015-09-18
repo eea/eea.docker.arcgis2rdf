@@ -1,5 +1,9 @@
 # eea.docker.arcgis2rdf
 
+Exports ArcGIS online catalogue data into RDF files
+
+## Dependencies
+
 Additional libraries in use apart of the standard Python libs : rdflib and json
 
  rdflib ->
@@ -20,9 +24,9 @@ Additional libraries in use apart of the standard Python libs : rdflib and json
 ### The argument is:
    outputpath: Provides the full output in the server machine with the filename with extension .rdf
    e.g. "M:\ags_mxd_data\RDF\test.rdf"
-   
+
 ### Options
-   --group, -g : It possible retrive data from sevaral groups. 
+   --group, -g : It possible retrive data from sevaral groups.
         The dafault group is "European Environment Agency (Applications)"
         Avalilable groups are listed in http://eea.maps.arcgis.com/home/groups.html
-   
+
