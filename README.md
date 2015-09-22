@@ -32,3 +32,21 @@ Additional libraries in use apart of the standard Python libs : rdflib and json
 
 #### Example
     python readEoEGroup_rdf.py retrive_data.rdf -g "GMES Services"
+
+## How to run in Docker
+
+Note: Work in progress. We will add it to Docker Hub once it is working properly with environment variables.
+
+
+
+Build the Dockerfile locally.
+
+   git clone eea.docker.arcgis2rdf
+   cd eea.docker.arcgis2rdf
+   docker build -t arcgis2rdf . 
+
+Create a output directory with `mkdir rdf`. Run the docker container to create a RDF output in ./rdf
+
+   docker run -ti -v ./rdf:/var/local/arcgis2rdf:rw arcgis2rdf
+
+Now you should see the rdf file with `more rdf/arcgis_data.rdf`
