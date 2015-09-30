@@ -89,7 +89,7 @@ def groupContent(httpurl,groupId):
     q += 'OR type:"mobile application")'
 
     params['q'] = q
-    params['num']='100'
+    params['num']='10000'
     params['sortField']='modified'
     params['sortOrder']='desc'
     params['f'] = 'json'
@@ -144,11 +144,16 @@ def generaterdf(outputfile, groupName):
 
     for obj in myList['results']:
         print obj['title'] +  ' -> ' + obj['id']
-        subject = URIRef(httpurl + '/map/EEABasicviewer/?appid=' + obj['id'])
+        
+        subject = URIRef('http://discomap.eea.europa.eu/map/EEABasicviewer/?appid=' + obj['id'])
+
         tmpgraph = Graph(store=store, identifier=subject)
+        tmpgraph.add((subject, dctNs['id'], Literal(obj['id'])))
         tmpgraph.add((subject, rdfsNs['label'], Literal(obj['title'])))
         tmpgraph.add((subject, dmNs['type'], Literal(obj['itemType'])))
-        tmpgraph.add((subject, dmNs['serviceURL'], subject))
+
+        if 'url' in obj and obj['url']:
+            tmpgraph.add((subject, dmNs['serviceURL'], URIRef(obj['url'])))
 
         if 'description' in obj and obj['description']:
             description = ' '.join(striphtml(obj['description']).split())
