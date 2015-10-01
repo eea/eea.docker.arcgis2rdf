@@ -20,7 +20,6 @@
 #   e.g. "M:\ags_mxd_data\RDF\test.rdf"
 ############################################
 
-
 from rdflib import Namespace, BNode, Literal, URIRef
 from rdflib.graph import Graph, ConjunctiveGraph
 from rdflib.plugins.memory import IOMemory
@@ -28,7 +27,6 @@ import json
 from datetime import datetime
 from optparse import OptionParser
 import httplib, urllib, string, os, sys, re
-
 
 #http://www.arcgis.com/sharing/rest/community/groups
 
