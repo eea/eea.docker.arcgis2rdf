@@ -147,7 +147,9 @@ def generaterdf(outputfile, groupName):
     for obj in myList['results']:
         print obj['title'] +  ' -> ' + obj['id']
 
-        subject = URIRef('http://discomap.eea.europa.eu/map/EEABasicviewer/?appid=' + obj['id'])
+        subject = URIRef(
+            'http://' + httpurl + '/home/item.html?id=' + obj['id']
+        )
         tmpgraph = Graph(store=store, identifier=subject)
         tmpgraph.add((subject, dctNs['id'], Literal(obj['id'])))
         tmpgraph.add((subject, rdfsNs['label'], Literal(obj['title'])))
@@ -216,4 +218,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

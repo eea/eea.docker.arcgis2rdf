@@ -13,8 +13,8 @@ WORKDIR /opt/arcgis2rdf
 ADD readEoEGroup_rdf.py ./
 
 ENV ARCGIS_FILEPATH /var/local/arcgis2rdf/arcgis_data.rdf
-ENV ARCGIS_GROUP "European Environment Agency (Applications)"
+ENV ARCGIS_GROUP="European Environment Agency (Applications)"
 
 VOLUME ["/var/local/arcgis2rdf"]
 
-CMD ./readEoEGroup_rdf.py $ARCGIS_FILEPATH -g $ARCGIS_GROUP 
+CMD ./readEoEGroup_rdf.py $ARCGIS_FILEPATH -g "${ARCGIS_GROUP}"
