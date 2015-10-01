@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 # Additional libraries in use apart of the standard Python libs : rdflib and json
 # rdflib ->
 #    RDFLib is open source and is maintained in a GitHub repository:
@@ -18,16 +20,18 @@
 #   e.g. "M:\ags_mxd_data\RDF\test.rdf"
 ############################################
 
+
 from rdflib import Namespace, BNode, Literal, URIRef
 from rdflib.graph import Graph, ConjunctiveGraph
 from rdflib.plugins.memory import IOMemory
-
 import json
 from datetime import datetime
 from optparse import OptionParser
 import httplib, urllib, string, os, sys, re
 
+
 #http://www.arcgis.com/sharing/rest/community/groups
+
 #q=Redlands
 #
 # {
@@ -55,12 +59,13 @@ import httplib, urllib, string, os, sys, re
 #    }]
 #  }
 
+
 httpurl = "eea.maps.arcgis.com"
 GROUPNAME = "European Environment Agency (Applications)"
 
+
 def groupSearch(httpurl,groupName):
     params={}
-
     url = 'http://' + httpurl + "/sharing/rest/community/groups"
     params['f'] = 'json'
     #params['token']=self.token
@@ -68,15 +73,14 @@ def groupSearch(httpurl,groupName):
 
     URL = url + "?" + urllib.urlencode(params)
     myJsonText = urllib.urlopen(URL).read()
-
     jsonresult = json.loads(myJsonText)
-
     # give JSON object back
     return jsonresult
 
 #
 # http://www.arcgis.com/sharing/rest/content/groups/4774c1c2b79046f285b2e86e5a20319
 # http://www.arcgis.com/apidocs/rest/
+
 def groupContent(httpurl,groupId):
     params={}
 
@@ -96,7 +100,6 @@ def groupContent(httpurl,groupId):
 
     URL = url + "?" + urllib.urlencode(params)
     myJsonText = urllib.urlopen(URL).read()
-
     jsonresult = json.loads(myJsonText)
 
     # give JSON object back
@@ -107,13 +110,14 @@ def striphtml(text):
     p = re.compile(r'<.*?>')
     return p.sub('', text)
 
+
 def generaterdf(outputfile, groupName):
     # find the groups based on the name of the group.
     myList = groupSearch(httpurl,groupName)
-
     # take the first group's id
     groupId = myList['results'][0]['id']
     print groupId
+
 
     # Find all items in one group.
     myList = groupContent(httpurl,groupId)
@@ -144,9 +148,8 @@ def generaterdf(outputfile, groupName):
 
     for obj in myList['results']:
         print obj['title'] +  ' -> ' + obj['id']
-        
-        subject = URIRef('http://discomap.eea.europa.eu/map/EEABasicviewer/?appid=' + obj['id'])
 
+        subject = URIRef('http://discomap.eea.europa.eu/map/EEABasicviewer/?appid=' + obj['id'])
         tmpgraph = Graph(store=store, identifier=subject)
         tmpgraph.add((subject, dctNs['id'], Literal(obj['id'])))
         tmpgraph.add((subject, rdfsNs['label'], Literal(obj['title'])))
@@ -159,35 +162,45 @@ def generaterdf(outputfile, groupName):
             description = ' '.join(striphtml(obj['description']).split())
             description = re.sub(u"(\u2018|\u2019)", "'", description)
             tmpgraph.add((subject, dctNs['description'], Literal(description)))
+
         if obj.get("uploaded","") != "":
             # remove timezone from timestamp
             timestamp = int(str(obj['uploaded'])[:-3])
             date = datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d')
             tmpgraph.add((subject, dctNs['created'], Literal(date)))
             tmpgraph.add((subject, dctNs['issued'], Literal(date)))
+
         if obj.get("title","") != "":
             tmpgraph.add((subject, dctNs['title'], Literal(obj['title'])))
+
         if obj.get("owner","") != "":
             tmpgraph.add((subject, dctNs['creator'], Literal(obj['owner'])))
+
         if obj.get("tags","") != "":
             for keyword in obj['tags']:
                 tmpgraph.add((subject, dctNs['subject'], Literal(keyword.strip())))
+
         #also "Comments", "Subject", "Category", "Credits"
+
 
     outRDF = os.path.join(outputfile)
     RDFFile = open(outRDF,"w")
     RDFFile.writelines(g.serialize())
     RDFFile.close()
 
+
 def usage(prog):
     print >> sys.stderr, "Usage: %s <outputfile> [-g GroupName]" % prog
     sys.exit(1)
+
 
 def main():
     parser = OptionParser(usage="usage: %prog [options] <outputfile>")
     parser.add_option("-g", "--group", dest="groupName",
         default=GROUPNAME)
+
     options, arguments = parser.parse_args()
+
     if len(arguments) != 1:
         usage(sys.argv[0])
 
@@ -202,5 +215,7 @@ def main():
         print "RDF produced successfully"
         return 0  # exit errorlessly
 
+
 if __name__ == '__main__':
     main()
+

@@ -17,4 +17,4 @@ ENV ARCGIS_GROUP "European Environment Agency (Applications)"
 
 VOLUME ["/var/local/arcgis2rdf"]
 
-CMD python ./readEoEGroup_rdf.py /var/local/arcgis2rdf/arcgis_data.rdf -g "European Environment Agency (Applications)"
+CMD ./readEoEGroup_rdf.py $ARCGIS_FILEPATH -g $ARCGIS_GROUP 
